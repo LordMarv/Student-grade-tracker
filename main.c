@@ -50,7 +50,7 @@ void listInfo(){
 		
 		// Print subjects and scores for the current student
 		for(j=0; j<MAX_SUBJECTS; j++){
-			printf("%s\t%d",studentReport[i].subject, studentReport[i].score);
+			printf("%s\t%d",studentReport[i].subject[j], studentReport[i].score[j]);
 		}
 	}	
 }
@@ -66,7 +66,7 @@ void searchInfo(const char *name){
 		}
 	}
 	
-	if(flag=1){
+	if(flag==1){
 		int j;
 		printf("%d. %s :\n",studentReport[i].id, studentReport[i].name);
 		
@@ -98,13 +98,13 @@ void deleteInfo(const char *name){
 		Total--;
 		printf("%s has been deleted\n",name);
 	}else{
-		printf("%s was not found", name);
+		printf("%s was not found\n", name);
 	}
 }
 
 void editInfo(const char *name, int id, const char subject[][50], const int score[]){
 	int i;
-	int flag;
+	int flag=0;
 	
 	for(i=0; i< Total; i++){
 		if(strcmp(studentReport[i].name, name)==0){
@@ -122,16 +122,17 @@ void editInfo(const char *name, int id, const char subject[][50], const int scor
 		
 		printf("Enter student Id: \n");
 		scanf("%d", &newId);
+		getchar();
 		
 		printf("Enter new Student Name: \n");
 		fgets(newName, sizeof(newName), stdin);
 		
-		strcpy(studentReport[Total].name, newName); // Copy the name into the name array
-    	studentReport[Total].id=newId;
+		strcpy(studentReport[i].name, newName); // Copy the name into the name array
+    	studentReport[i].id=newId;
     	
     	for(i=0; i<MAX_SUBJECTS; i++){
-    	strcpy(studentReport[Total].subject[i], newSub[i]); // Copy the name into the name array
-    	studentReport[Total].score[i]=newScore[i];
+    	strcpy(studentReport[i].subject[i], subject[i]); // Copy the name into the name array
+    	studentReport[i].score[i]=score[i];
     	
     	printf("Student Report has been updated\n");
 		}
@@ -184,7 +185,7 @@ int main() {
 			case 3:
 				printf("Enter a name: \n");
 				fgets(name, sizeof(name), stdin);
-				
+				getchar();
 				searchInfo(name);
 				break;
 				
@@ -200,10 +201,10 @@ int main() {
 				scanf("%d",&id);
 				
 				printf("Enter the Student Name: \n");
-				fgets(name, sizeof(name), stdin);
+				scanf("%s", name);
 				
 				printf("Enter Subjects: \n");
-				fgets(score, sizeof(score), stdin);
+				scanf("%s", subject);
 				
 				printf("Enter the score for each subject: \n");
 				scanf("%d", &score);
@@ -212,6 +213,8 @@ int main() {
 				break;
 				
 			case 6:
+				free(studentReport);
+				printf("Exiting the program...\n");
 				break;
 				
 			default:
